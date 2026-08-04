@@ -1,6 +1,6 @@
 ![alt text](image.png)
 
-
+![alt text](image-1.png)
 
 creating login key pair for instance.(on linux)
     >use the command "ssh-keygen -t rsa -b 4096 -f ~/.ssh/aws_key_pair" to create the key
@@ -27,50 +27,3 @@ creating login key pair for instance.(on linux)
 
                         !!!DELETE THE KEYS AFTER DETELING THE RESOURCE!!!
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-The Fix: Use SSH Agent Forwarding (Recommended)
-Instead of manually copying your private key onto the public server (which is a security risk), use SSH Agent Forwarding. This lets your local machine safely share its private key for the second hop.
-
-Follow these 3 steps on your local computer terminal:
-
-Step 1: Add your private key to your local SSH Agent
-Run this command on your local machine:
-
-Bash
-# Mac / Linux / Git Bash
-ssh-add ~/.ssh/id_rsa
-Note for Windows PowerShell users: If ssh-add says the agent is not running, start it first with Set-Service -Name ssh-agent -StartupType Automatic; Start-Service ssh-agent.
-
-Verify that your key was added by running:
-
-Bash
-ssh-add -l
-Step 2: SSH into your Public EC2 using the -A flag
-The -A flag enables agent forwarding:
-
-Bash
-ssh -A ubuntu@<PUBLIC_EC2_PUBLIC_IP>
-Step 3: SSH into the Private EC2
-Now that you are inside your public instance, try connecting to the private instance again:
-
-Bash
-ssh ubuntu@10.0.2.106
-It will now use your local computer's private key via agent forwarding and log you in successfully!
