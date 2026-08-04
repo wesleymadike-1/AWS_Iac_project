@@ -1,0 +1,46 @@
+#!/bin/bash
+# Exit immediately if a command fails or an unset variable is used
+set -euo pipefail
+
+# Redirect all output to a log file for easier debugging
+exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+
+echo "==> Starting EC2 User Data Provisioning..."
+
+# Ensure non-interactive package installations
+export DEBIAN_FRONTEND=noninteractive
+
+echo "==> Updating system packages and installing dependencies..."
+apt-get update -qq
+apt-get install -y nginx git unzip wget
+
+# Create and move to a temporary working directory
+WORKDIR=$(mktemp -d)
+cd "$WORKDIR"
+
+echo "==> Downloading website template..."
+# Removed --show-progress to prevent log spam in cloud-init output
+wget -q "https://html5up.net/multiverse/download" -O template.zip
+
+echo "==> Clearing default Nginx landing page..."
+rm -f /var/www/html/index.nginx-debian.html
+
+echo "==> Extracting template to web root..."
+unzip -qo template.zip -d /var/www/html/
+
+echo "==> Injecting Terraform template variable..."
+# This replaces the default <title> tag with your Terraform variable "server_title"
+sed -i "s|<title>.*</title>|<title>${server_title}</title>|i" /var/www/html/index.html
+
+echo "==> Setting file permissions for Nginx..."
+chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html
+
+echo "==> Enabling and starting Nginx web server..."
+systemctl enable nginx
+systemctl restart nginx
+
+# Cleanup temporary files
+rm -rf "$WORKDIR"
+
+echo "==> Done! Website successfully installed."
