@@ -1,8 +1,5 @@
 .env
 /home/wesley/Projects/Iac-AWS/SIMPLE_NETWORK/readme.md
-/home/wesley/Projects/Iac-AWS/SIMPLE_NETWORK/.terraform
-/home/wesley/Projects/Iac-AWS/SIMPLE_NETWORK/terraform.tfstate
-/home/wesley/Projects/Iac-AWS/SIMPLE_NETWORK/terraform.tfstate.backup
 .terraform/
 *.tfstate
 *.tfstate.backup

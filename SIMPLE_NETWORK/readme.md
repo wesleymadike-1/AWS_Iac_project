@@ -2,6 +2,8 @@
 
 ![alt text](image-1.png)
 
+
+
 creating login key pair for instance.(on linux)
     >use the command "ssh-keygen -t rsa -b 4096 -f ~/.ssh/aws_key_pair" to create the key
 
@@ -27,3 +29,6 @@ creating login key pair for instance.(on linux)
 
                         !!!DELETE THE KEYS AFTER DETELING THE RESOURCE!!!
 
+
+
+[def]: ../../../../..
