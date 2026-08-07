@@ -50,3 +50,20 @@ resource "aws_route_table" "MrX_Public_Route_Table" {
     }
 }
 
+resource "aws_route_table_association" "MrX_Public_Route_Table_Association" {
+    subnet_id      = aws_subnet.MrX_Public_Subnet.id
+    route_table_id = aws_route_table.MrX_Public_Route_Table.id
+}
+
+#route to the vpc peering connection
+resource "aws_route_table" "MrX_Private_Route_Table" {
+    vpc_id = aws_vpc.MrX_VPC.id 
+    route { 
+        cidr_block = "
+
+    }
+}
+resource "aws_route_table_association" "MrX_Private_Route_Table_Association" {
+    subnet_id      = aws_subnet.MrX_Private_Subnet.id
+    route_table_id = aws_route_table.MrX_Private_Route_Table.id
+}
