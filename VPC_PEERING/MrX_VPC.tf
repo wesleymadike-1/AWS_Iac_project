@@ -20,7 +20,7 @@ resource "aws_subnet" "MrX_Public_Subnet" {
     vpc_id                  = aws_vpc.MrX_VPC.id
     cidr_block              = "10.1.1.0/24"
     map_public_ip_on_launch = true 
-
+    availability_zone       = "af-south-1a"
     tags = {
         Name = "MrX-Public-Subnet"
     }
@@ -30,11 +30,24 @@ resource "aws_subnet" "MrX_Private_Subnet" {
     vpc_id                  = aws_vpc.MrX_VPC.id
     cidr_block              = "10.1.2.0/24"
     map_public_ip_on_launch = false
+    availability_zone       = "af-south-1a"
 
     tags = {
         Name = "MrX-Private-Subnet"
     }
 }
+
+#===============================================VPC PEERING========================================================
+resource "aws_vpc_peering_connection" "MrX_MrsX_Peering"{
+    vpc_id        = aws_vpc.MrX_VPC.id
+    peer_vpc_id   = aws_vpc.MrsX_VPC.id
+    auto_accept   = true
+
+    tags = {
+        Name = "REQUESTER-MRX"
+    }
+}
+
 
 
 #==================================ROUTE TABLES========================================================
@@ -59,8 +72,8 @@ resource "aws_route_table_association" "MrX_Public_Route_Table_Association" {
 resource "aws_route_table" "MrX_Private_Route_Table" {
     vpc_id = aws_vpc.MrX_VPC.id 
     route { 
-        cidr_block = "
-
+        cidr_block = "10.2.0.0/16"
+        vpc_peering_connection_id = aws_vpc_peering_connection.MrX_MrsX_Peering.id
     }
 }
 resource "aws_route_table_association" "MrX_Private_Route_Table_Association" {
