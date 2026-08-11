@@ -9,9 +9,9 @@ resource "aws_vpc_peering_connection" "A_Peering"{
     }
 }
 
-#===============================================VPC PEERING========================================================
-resource "aws_vpc_peering_connection_accepter" "B_MrX_Peering"{
-    vpc_peering_connection_id = aws_vpc_peering_connection.MrX_B_Peering.id
+#===============================================VPC PEERING B-to-A========================================================
+resource "aws_vpc_peering_connection_accepter" "B_Peering"{
+    vpc_peering_connection_id = aws_vpc_peering_connection.A_Peering.id
     auto_accept               = true
 
     tags = {
