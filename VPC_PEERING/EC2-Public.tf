@@ -35,7 +35,7 @@ resource "aws_security_group" "ec2_public_security_group" {
     protocol    = "tcp"
     cidr_blocks = ["10.1.2.0/24"]
   }
-  #ping rule to private subnet of MrX VPC
+  #ping rule to private subnet of A VPC
   egress { 
     from_port   = -1
     to_port     = -1
@@ -45,7 +45,7 @@ resource "aws_security_group" "ec2_public_security_group" {
 
  
   tags = {
-    Name       = "MrX-EC2-public-SG"
+    Name       = "A-EC2-public-SG"
     managed_by = "Terraform"
   }
 }
