@@ -33,6 +33,10 @@ resource "aws_route_table" "MrsX_Private_Route_Table" {
         cidr_block = "10.1.0.0/16"
         vpc_peering_connection_id = aws_vpc_peering_connection.MrX_MrsX_Peering.id
     }
+
+    tags = {
+        Name = "MrsX-Private-Route-Table"
+    }
 }
 
 resource "aws_route_table_association" "MrsX_Private_Route_Table_Association" {

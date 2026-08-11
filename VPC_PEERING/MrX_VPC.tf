@@ -75,6 +75,10 @@ resource "aws_route_table" "MrX_Private_Route_Table" {
         cidr_block = "10.2.0.0/16"
         vpc_peering_connection_id = aws_vpc_peering_connection.MrX_MrsX_Peering.id
     }
+
+    tags = {
+        Name = "MrX-Private-Route-Table"
+    }
 }
 resource "aws_route_table_association" "MrX_Private_Route_Table_Association" {
     subnet_id      = aws_subnet.MrX_Private_Subnet.id
