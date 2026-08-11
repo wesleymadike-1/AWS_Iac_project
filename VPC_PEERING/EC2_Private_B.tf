@@ -23,13 +23,13 @@ resource "aws_security_group" "B_Private_SG" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["10.1.2.0/24"]
-   }
-    #allow ping from vpc A peering connection    
-  ingress { 
+  }
+  #allow ping from vpc A peering connection    
+  ingress {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
-    cidr_blocks = ["10.1.2.0/24"]  
-   }
+    cidr_blocks = ["10.1.2.0/24"]
+  }
 
 }

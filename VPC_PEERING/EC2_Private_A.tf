@@ -23,33 +23,33 @@ resource "aws_security_group" "A_Private_SG" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["10.1.1.0/24"]
-   }
-    #allow ping from public ec2 instance    
-  ingress { 
+  }
+  #allow ping from public ec2 instance    
+  ingress {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
-    cidr_blocks = ["10.1.1.0/24"]  
-   }
+    cidr_blocks = ["10.1.1.0/24"]
+  }
 
-   egress {
+  egress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["10.2.2.0/24"]
-   }
+  }
 
-   egress {
+  egress {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
     cidr_blocks = ["10.2.2.0/24"]
-   }
+  }
 
-    tags = {
-        Name       = "A-Private-SG"
-        managed_by = "Terraform"
-    }
+  tags = {
+    Name       = "A-Private-SG"
+    managed_by = "Terraform"
+  }
 
 
 }

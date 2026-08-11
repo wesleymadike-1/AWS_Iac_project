@@ -2,7 +2,7 @@
 resource "aws_instance" "ec2_public_instance" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t3.micro"
-  subnet_id              = aws_subnet.public_subnet.id
+  subnet_id              = aws_subnet.A_Public_Subnet.id
   vpc_security_group_ids = [aws_security_group.ec2_public_security_group.id]
 
   key_name = aws_key_pair.key_pair_for_all_instances.key_name #attach the key pair to the instance
@@ -13,12 +13,12 @@ resource "aws_instance" "ec2_public_instance" {
 }
 
 data "http" "my_public_ip" {
-  url = "https://api.ipify.org?format=json"
+  url = "https://checkip.amazonaws.com"
 }
 
 
 resource "aws_security_group" "ec2_public_security_group" {
-  vpc_id      = aws_vpc.Data_engineering.id
+  vpc_id      = aws_vpc.A_VPC.id
   description = "Security group for EC2 instances"
 
   #inbound rule to allow SSH access from my ip address
@@ -26,7 +26,7 @@ resource "aws_security_group" "ec2_public_security_group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${chomp(jsondecode(data.http.my_public_ip.response_body).ip)}/32"]
+    cidr_blocks = ["${chomp(data.http.my_public_ip.response_body)}/32"]
   }
 
   egress {
@@ -36,14 +36,23 @@ resource "aws_security_group" "ec2_public_security_group" {
     cidr_blocks = ["10.1.2.0/24"]
   }
   #ping rule to private subnet of A VPC
-  egress { 
+  egress {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
     cidr_blocks = ["10.1.2.0/24"]
   }
 
- 
+
+  #allow all outbound traffic to the internet
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
   tags = {
     Name       = "A-EC2-public-SG"
     managed_by = "Terraform"
