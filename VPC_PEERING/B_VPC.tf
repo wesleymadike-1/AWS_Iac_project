@@ -16,15 +16,7 @@ resource "aws_subnet" "B_Private_Subnet" {
     }
 }
 
-#===============================================VPC PEERING========================================================
-resource "aws_vpc_peering_connection_accepter" "B_MrX_Peering"{
-    vpc_peering_connection_id = aws_vpc_peering_connection.MrX_B_Peering.id
-    auto_accept               = true
 
-    tags = {
-        Name = "ACCEPTER-B"
-    }
-}
 
 #==================================ROUTE TABLES========================================================
 resource "aws_route_table" "B_Private_Route_Table" {
